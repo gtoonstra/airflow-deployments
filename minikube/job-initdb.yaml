@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: airflow-initdb-1.8.1
+  namespace: default
+spec:
+  template:
+    metadata:
+      name: airflow-initdb
+    spec:
+      containers:
+      - image: 192.168.99.1:5000/airflow-k8s:latest
+        imagePullPolicy: Always
+        command: ["/init_airflow.sh"]
+        name: airflow-initdb 
+        env:
+        - name: AIRFLOW_HOME
+          value: /usr/local/airflow
+        - name: SQL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: sql-host
+        - name: SQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: sql-database
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: sql-user
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: sql-password
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never 
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

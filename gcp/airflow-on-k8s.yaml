@@ -1,0 +1,12 @@
+imports:
+- path: gke-template.py
+- path: network-template.py
+- path: firewall-template.py
+- path: airflow-on-k8s.py
+- path: mysql-instance.py
+- path: mysql-database.py
+- path: mysql-user.py
+
+resources:
+- name: airflow-on-k8s
+  type: airflow-on-k8s.py
